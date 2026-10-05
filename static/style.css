@@ -1,0 +1,48 @@
+:root{
+	--bg:#0b0b0b;
+	--card:#141414;
+	--muted:#b3b3b3;
+	--accent:#e50914;
+}
+
+*{box-sizing:border-box;font-family:Roboto, Inter, system-ui, Arial, sans-serif}
+body{margin:0;background:linear-gradient(180deg,#071019,#0b0b0b);color:#fff}
+.container{max-width:1200px;margin:0 auto;padding:24px}
+
+/* Navigation */
+.nav{background:transparent;position:sticky;top:0;z-index:40}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
+.logo{font-weight:700;font-size:20px;color:var(--accent)}
+.nav-links{display:flex;gap:16px;align-items:center}
+.nav-links a{color:#ddd;opacity:.9}
+.actions .btn{padding:8px 12px;border-radius:4px;border:0;cursor:pointer}
+.btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.08);color:#fff}
+
+/* Hero */
+.hero{padding:80px 0 60px;background:linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.6));margin-bottom:10px}
+.hero-inner{display:flex;align-items:center}
+.hero-copy{max-width:720px}
+.hero h1{margin:0;font-size:44px;line-height:1.05}
+.subtitle{color:var(--muted);margin:12px 0 20px}
+.search{display:flex;gap:8px}
+.search input{flex:1;padding:14px;border-radius:6px;border:0;background:#1b1b1b;color:#fff}
+.search button{padding:14px 18px;border-radius:6px;border:0;background:var(--accent);color:#fff;cursor:pointer}
+
+/* Results row (horizontal scroll) */
+.section-title{margin:8px 0 12px;font-size:18px;color:#fff}
+.results-row{display:flex;gap:12px;overflow-x:auto;padding:12px 4px}
+.results-row::-webkit-scrollbar{height:10px}
+.results-row::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.06);border-radius:6px}
+.card{background:transparent;border-radius:6px;min-width:160px;max-width:200px;flex:0 0 auto;cursor:pointer}
+.poster{background:#111;height:300px;border-radius:6px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.poster img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .2s ease}
+.card:hover .poster img{transform:scale(1.06)}
+.meta{padding:8px 4px}
+.meta h3{margin:0;font-size:14px}
+.muted{color:var(--muted)}
+
+@media (max-width:700px){
+	.hero h1{font-size:28px}
+	.poster{height:220px}
+}
+

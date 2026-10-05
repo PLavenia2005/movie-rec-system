@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Movie Recommender</title>
+		<link rel="stylesheet" href="/static/style.css" />
+	</head>
+	<body>
+		<header class="hero">
+			<div class="container">
+				<h1>Movie Recommender</h1>
+				<p class="subtitle">A simple Netflix-style frontend powered by FastAPI recommendations.</p>
+				<div class="search">
+					<input id="query" placeholder="Search a movie title, e.g. Avatar" />
+					<button id="go">Recommend</button>
+				</div>
+			</div>
+		</header>
+
+		<main class="container">
+			<section id="results" class="grid"></section>
+		</main>
+
+		<script>
+			const go = document.getElementById('go');
+			const queryInput = document.getElementById('query');
+			const resultsEl = document.getElementById('results');
+
+			async function fetchRecommendations(title){
+				const data = await (await fetch(`/api/recommend?title=${encodeURIComponent(title)}`)).json();
+				renderList(data.results || []);
+			}
+
+			async function fetchRandom(n = 12){
+				const res = await fetch(`/api/random?n=${n}`);
+				const data = await res.json();
+				if(data.error){
+					resultsEl.innerHTML = `<p class="muted">Error: ${data.error}</p>`;
+					return;
+				}
+				renderList(data.results || []);
+			}
+
+			function renderList(list){
+				if(!Array.isArray(list) || list.length === 0){
+					resultsEl.innerHTML = `<p class="muted">No recommendations found.</p>`;
+					return;
+				}
+				resultsEl.innerHTML = '';
+				for(const item of list){
+					const card = document.createElement('div');
+					card.className = 'card';
+
+					const posterWrap = document.createElement('div');
+					posterWrap.className = 'poster';
+					if(item.poster){
+						const imgEl = document.createElement('img');
+						imgEl.src = item.poster;
+						imgEl.alt = item.title || '';
+						posterWrap.appendChild(imgEl);
+					}
+
+					const meta = document.createElement('div');
+					meta.className = 'meta';
+					const h3 = document.createElement('h3');
+					h3.textContent = item.title || '';
+					meta.appendChild(h3);
+
+					card.appendChild(posterWrap);
+					card.appendChild(meta);
+					resultsEl.appendChild(card);
+				}
+			}
+
+			go.addEventListener('click', ()=>{
+				const q = queryInput.value.trim();
+				if(q) fetchRecommendations(q);
+			});
+			queryInput.addEventListener('keydown', (e)=>{ if(e.key==='Enter') go.click(); });
+
+			// load random movies on page load
+			document.addEventListener('DOMContentLoaded', ()=>{ fetchRandom(); });
+		</script>
+	</body>
+</html>
+
